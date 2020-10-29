@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "container">
+    <h1 class="text-center">Graphs for <mark>{{ area }}</mark></h1>
+    <div class="row">
+        <div class="col">
+            Covid Cumulative Deaths:
+            <canvas id="covidChart" width="100" height="100">Covid Cumulative Deaths</canvas>
+        </div>
+        <div class="col">
+            New Deaths by Date:
+            <canvas id="newDeathsByDeathDateChart" width="100" height="100">New Deaths by Date</canvas>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script>
+var jsonfile = {{ cumDeathsByDeathDateJSON }};
+
+var labels = jsonfile.data.map(function(e) {
+   return e.date;
+});
+var data = jsonfile.data.map(function(e) {
+   return e.cumDeathsByDeathDate;
+});;
+
+var ctx = document.getElementById('covidChart').getContext('2d');
+var config = {
+   type: 'line',
+   data: {
+      labels: labels,
+      datasets: [{
+         label: 'Graph Line',
+         data: data,
+         backgroundColor: 'rgba(0, 119, 204, 0.3)'
+      }]
+   }
+};
+var chart = new Chart(ctx, config);
+</script>
+<script>
+var jsonfile = {{ newDeathsByDeathDateJSON }};
+
+var labels = jsonfile.data.map(function(e) {
+   return e.date;
+});
+var data = jsonfile.data.map(function(e) {
+   return e.newDeathsByDeathDate;
+});;
+
+var ctx = document.getElementById('newDeathsByDeathDateChart').getContext('2d');
+var config = {
+   type: 'line',
+   data: {
+      labels: labels,
+      datasets: [{
+         label: 'Graph Line',
+         data: data,
+         backgroundColor: 'rgba(0, 119, 204, 0.3)'
+      }]
+   }
+};
+var chart = new Chart(ctx, config);
+</script>
+{% endblock javascript %}
