@@ -7,11 +7,8 @@ import core.covid as covid
 
 def index(request, area="Trafford"):
 
-    # if area == "":
-    #     area = "Trafford"
-
-    cumDeathsByDeathDateJSON = covid.get_area_cumDeathsByDeathDate(area)
-    newDeathsByDeathDateJSON = covid.get_area_newDeathsByDeathDate(area)
+    cumDeathsByDeathDateJSON = covid.get_area_stat(area, "cumDeathsByDeathDate")
+    newDeathsByDeathDateJSON = covid.get_area_stat(area, "newDeathsByDeathDate")
 
     ctx = {
         "area": area,
