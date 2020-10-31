@@ -1,7 +1,12 @@
 from uk_covid19 import Cov19API
-import json
 import jq
 
+import core.coreconfig as coreconfig
+
+import datanews
+datanews.api_key = coreconfig.datanews_apikey
+
+from pprint import pprint
 
 def get_area_stat(area, stat):
 
@@ -43,3 +48,10 @@ def get_area_stat(area, stat):
     dataDict['data'] = listTemp
 
     return dataDict
+
+def get_news(area):
+    query = '(covid|covid-19|coronavirus|SARS-CoV-2)+' + area
+    response = datanews.headlines(q=query, language=['en'], sortBy='date', size=100)
+    
+    pprint(response)
+    return response
