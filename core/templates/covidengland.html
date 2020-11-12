@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "container">
+    <h1 class="text-center">COVID info for <mark>{{ area|title }}</mark></h1>
+    <hr class="mt-2 mb-3"/>
+    <div class="row">
+        <h2><mark>{{ area|title }}</mark> COVID related graphs</h2>
+    </div>
+    <hr class="mt-2 mb-3"/>
+    <div class="row">
+        <div class="col-sm">
+            Covid Cumulative Deaths:
+            <canvas id="covidChart" width="100" height="100">Covid Cumulative Deaths</canvas>
+        </div>
+        <div class="col-sm">
+            New Deaths by Date:
+            <canvas id="newDeathsByDeathDateChart" width="100" height="100">New Deaths by Date</canvas>
+        </div>
+    </div>
+    <hr class="mt-2 mb-3"/>
+    <div class="row">
+        <h2><mark>{{ area|title }}</mark> COVID related news</h2>
+    </div>
+    <hr class="mt-2 mb-3"/>
+    <div class="row">
+    {% for article in articles.hits %}
+        <div class="col-sm-2" style="max-height:1000px">
+            <img src="{{ article.imageUrl }}" class="img-thumbnail">
+        </div>
+        <div class="col-sm-4">
+            <p>{{ article.title }}</p>
+            <p class="block-quote"><a href="{{ article.url }}">{{ article.source }}</a></p>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script>
+var jsonfile = {{ cumDeathsByDeathDateJSON }};
+
+var labels = jsonfile.data.map(function(e) {
+   return e.date;
+});
+var data = jsonfile.data.map(function(e) {
+   return e.cumDeathsByDeathDate;
+});;
+
+var ctx = document.getElementById('covidChart').getContext('2d');
+var config = {
+   type: 'line',
+   data: {
+      labels: labels,
+      datasets: [{
+         label: 'Cumulative Deaths',
+         data: data,
+         backgroundColor: 'rgba(178, 108, 228, 0.74)'
+      }]
+   }
+};
+var chart = new Chart(ctx, config);
+</script>
+<script>
+var jsonfile = {{ newDeathsByDeathDateJSON }};
+
+var labels = jsonfile.data.map(function(e) {
+   return e.date;
+});
+var data = jsonfile.data.map(function(e) {
+   return e.newDeathsByDeathDate;
+});;
+
+var ctx = document.getElementById('newDeathsByDeathDateChart').getContext('2d');
+var config = {
+   type: 'line',
+   data: {
+      labels: labels,
+      datasets: [{
+         label: 'New Deaths',
+         data: data,
+         backgroundColor: 'rgba(206, 75, 88, 0.81)'
+      }]
+   }
+};
+var chart = new Chart(ctx, config);
+</script>
+{% endblock javascript %}

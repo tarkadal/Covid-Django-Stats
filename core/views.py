@@ -6,12 +6,15 @@ import core.covid as covid
 import core.coreconfig as coreconfig
 
 
-def index(request, area="Trafford"):
+def index(request):
+    return render(request, 'index.html', {})
+
+def covid_england(request, area="Trafford"):
 
     cumDeathsByDeathDateJSON = covid.get_area_stat(area, "cumDeathsByDeathDate")
-    newDeathsByDeathDateJSON = covid.get_area_stat(area, "newDeathsByDeathDate")
-    articles = covid.get_news(area)
-    # articles = coreconfig.test_news
+    newDeathsByDeathDateJSON = covid.get_area_stat(area, "newDeaths28DaysByPublishDate")
+    # articles = covid.get_news(area)
+    articles = coreconfig.test_news
 
     ctx = {
         "area": area,
@@ -20,4 +23,4 @@ def index(request, area="Trafford"):
         "articles": articles,
     }
 
-    return render(request, 'index.html', ctx )
+    return render(request, 'covidengland.html', ctx )

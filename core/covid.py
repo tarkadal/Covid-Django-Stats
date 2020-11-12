@@ -53,5 +53,4 @@ def get_news(area):
     query = '(covid|covid-19|coronavirus|SARS-CoV-2)+' + area
     response = datanews.headlines(q=query, language=['en'], sortBy='date', size=100)
     
-    pprint(response)
     return response
